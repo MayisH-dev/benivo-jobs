@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Benivo.Jobs.Infrastructure.Data.Config
 {
-    public class ProjectConfiguration : IEntityTypeConfiguration<Project>
+    public sealed class ProjectConfiguration : BaseConfiguration<Project>
     {
-        public void Configure(EntityTypeBuilder<Project> builder)
+        protected override void ConfigureEntity(EntityTypeBuilder<Project> builder)
         {
             builder.Property(p => p.Name)
                 .HasMaxLength(100)
