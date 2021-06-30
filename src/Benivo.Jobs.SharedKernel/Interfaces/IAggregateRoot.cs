@@ -1,6 +1,11 @@
 ﻿namespace Benivo.Jobs.SharedKernel.Interfaces
 {
-    // Apply this marker interface only to aggregate root entities
-    // Repositories will only work with aggregate roots, not their children
+    /// <summary>
+    /// Marker interface for aggregate root entities
+    /// </summary>
+    /// <remarks>
+    /// The parent entity for a certain portion of the
+    /// domain that also handles interactions with its children
+    /// </remarks>
     public interface IAggregateRoot { }
 }

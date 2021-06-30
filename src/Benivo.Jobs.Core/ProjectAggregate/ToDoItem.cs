@@ -13,7 +13,7 @@ namespace Benivo.Jobs.Core.ProjectAggregate
         {
             IsDone = true;
 
-            Events.Add(new ToDoItemCompletedEvent(this));
+            this.AddDomainEvent(new ToDoItemCompletedEvent(this));
         }
 
         public override string ToString()

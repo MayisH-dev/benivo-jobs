@@ -26,7 +26,7 @@ namespace Benivo.Jobs.Core.ProjectAggregate
             _items.Add(newItem);
 
             var newItemAddedEvent = new NewItemAddedEvent(this, newItem);
-            Events.Add(newItemAddedEvent);
+            this.AddDomainEvent(newItemAddedEvent);
         }
 
         public void UpdateName(string newName)
