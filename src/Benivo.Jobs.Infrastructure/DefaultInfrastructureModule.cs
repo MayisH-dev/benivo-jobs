@@ -49,8 +49,7 @@ namespace Benivo.Jobs.Infrastructure
                 .As(typeof(IReadRepository<>))
                 .InstancePerLifetimeScope();
 
-            builder
-                .RegisterType<Mediator>()
+            builder.RegisterType<Mediator>()
                 .As<IMediator>()
                 .InstancePerLifetimeScope();
 
@@ -70,13 +69,13 @@ namespace Benivo.Jobs.Infrastructure
 
             foreach (var mediatrOpenType in mediatrOpenTypes)
             {
-                builder
-                .RegisterAssemblyTypes(_assemblies.ToArray())
-                .AsClosedTypesOf(mediatrOpenType)
-                .AsImplementedInterfaces();
+                builder.RegisterAssemblyTypes(_assemblies.ToArray())
+                    .AsClosedTypesOf(mediatrOpenType)
+                    .AsImplementedInterfaces();
             }
 
-            builder.RegisterType<EmailSender>().As<IEmailSender>()
+            builder.RegisterType<EmailSender>()
+                .As<IEmailSender>()
                 .InstancePerLifetimeScope();
         }
 

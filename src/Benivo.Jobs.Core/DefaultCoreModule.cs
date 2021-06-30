@@ -9,7 +9,8 @@ namespace Benivo.Jobs.Core
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<ToDoItemSearchService>()
-                .As<IToDoItemSearchService>().InstancePerLifetimeScope();
+                .As<IToDoItemSearchService>()
+                .InstancePerLifetimeScope();
         }
     }
 }

@@ -7,7 +7,6 @@ using Benivo.Jobs.Core.ProjectAggregate;
 using Benivo.Jobs.Core.Interfaces;
 using Benivo.Jobs.SharedKernel.Interfaces;
 using Benivo.Jobs.Core.ProjectAggregate.Specifications;
-using Ardalis.GuardClauses;
 
 namespace Benivo.Jobs.Core.Services
 {
@@ -15,10 +14,7 @@ namespace Benivo.Jobs.Core.Services
     {
         private readonly IRepository<Project> _repository;
 
-        public ToDoItemSearchService(IRepository<Project> repository)
-        {
-            _repository = repository;
-        }
+        public ToDoItemSearchService(IRepository<Project> repository) => _repository = repository;
 
         public async Task<Result<List<ToDoItem>>> GetAllIncompleteItemsAsync(int projectId, string searchString)
         {

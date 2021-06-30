@@ -13,10 +13,6 @@ namespace Benivo.Jobs.Infrastructure.Data
     {
         private readonly IMediator _mediator;
 
-        //public AppDbContext(DbContextOptions options) : base(options)
-        //{
-        //}
-
         public AppDbContext(DbContextOptions<AppDbContext> options, IMediator mediator)
             : base(options)
         {
@@ -31,11 +27,9 @@ namespace Benivo.Jobs.Infrastructure.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyAllConfigurationsFromCurrentAssembly();
-
-            // alternately this is built-in to EF Core 2.2
-            //modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
+        /// <returns>Number of entries written to the database</returns>
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             int result = await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
@@ -55,16 +49,15 @@ namespace Benivo.Jobs.Infrastructure.Data
                 entity.ClearDomainEvents();
                 foreach (var domainEvent in events)
                 {
-                    await _mediator.Publish(domainEvent).ConfigureAwait(false);
+                    await _mediator.Publish(domainEvent, cancellationToken).ConfigureAwait(false);
                 }
             }
 
             return result;
         }
 
-        public override int SaveChanges()
-        {
-            return SaveChangesAsync().GetAwaiter().GetResult();
-        }
+        /// <remarks>Should not be used in production, use the asynchronous version instead</remarks>
+        /// <returns>Number of entries written to the database</returns>
+        public override int SaveChanges() => SaveChangesAsync().GetAwaiter().GetResult();
     }
 }
