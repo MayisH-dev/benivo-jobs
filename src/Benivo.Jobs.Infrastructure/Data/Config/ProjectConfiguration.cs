@@ -1,5 +1,4 @@
 ﻿using Benivo.Jobs.Core.ProjectAggregate;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Benivo.Jobs.Infrastructure.Data.Config

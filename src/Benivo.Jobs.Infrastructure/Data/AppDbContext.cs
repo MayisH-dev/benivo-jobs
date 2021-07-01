@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.EFCore.Extensions;
-using Benivo.Jobs.Core.ProjectAggregate;
 using Benivo.Jobs.SharedKernel;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -18,9 +17,6 @@ namespace Benivo.Jobs.Infrastructure.Data
         {
             _mediator = mediator;
         }
-
-        public DbSet<ToDoItem> ToDoItems { get; set; }
-        public DbSet<Project> Projects { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

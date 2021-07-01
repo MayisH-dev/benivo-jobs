@@ -1,5 +1,4 @@
 ﻿using Ardalis.Specification;
-using Benivo.Jobs.Core.ProjectAggregate;
 
 namespace Benivo.Jobs.Core.ProjectAggregate.Specifications
 {

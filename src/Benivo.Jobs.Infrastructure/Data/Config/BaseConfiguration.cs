@@ -30,6 +30,6 @@ namespace Benivo.Jobs.Infrastructure.Data.Config
         /// Template method that is used to provide entity specific conifiguration
         /// </summary>
         /// <param name="builder"></param>
-        protected abstract void ConfigureEntity(EntityTypeBuilder<TEntity> builder);
+        protected virtual void ConfigureEntity(EntityTypeBuilder<TEntity> builder) { }
     }
 }
