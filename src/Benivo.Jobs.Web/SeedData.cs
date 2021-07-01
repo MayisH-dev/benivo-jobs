@@ -32,19 +32,17 @@ namespace Benivo.Jobs.Web
                 serviceProvider.GetRequiredService<DbContextOptions<AppDbContext>>(), null))
             {
                 // Look for any TODO items.
-                if (dbContext.ToDoItems.Any())
+                if (dbContext.Set<ToDoItem>().Any())
                 {
                     return;   // DB has been seeded
                 }
 
                 PopulateTestData(dbContext);
-
-
             }
         }
         public static void PopulateTestData(AppDbContext dbContext)
         {
-            foreach (var item in dbContext.ToDoItems)
+            foreach (var item in dbContext.Set<ToDoItem>())
             {
                 dbContext.Remove(item);
             }
@@ -53,7 +51,7 @@ namespace Benivo.Jobs.Web
             TestProject1.AddItem(ToDoItem1);
             TestProject1.AddItem(ToDoItem2);
             TestProject1.AddItem(ToDoItem3);
-            dbContext.Projects.Add(TestProject1);
+            dbContext.Set<Project>().Add(TestProject1);
 
             dbContext.SaveChanges();
         }
