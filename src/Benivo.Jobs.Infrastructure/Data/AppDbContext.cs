@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.EFCore.Extensions;
-using Benivo.Jobs.Core.ProjectAggregate;
 using Benivo.Jobs.SharedKernel;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

@@ -10,8 +10,9 @@ namespace Benivo.Jobs.Infrastructure.Data.Config
         {
             // See more: EF Core shadow properties
             builder.HasAlternateKey(JobForeignKeyColumn);
+
             builder.HasOne(b => b.Job)
-                .WithOne(j => j.Bookmark!)
+                .WithOne(j => j!.Bookmark!)
                 .HasForeignKey<Bookmark>(JobForeignKeyColumn);
         }
     }

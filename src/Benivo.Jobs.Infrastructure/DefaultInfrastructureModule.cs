@@ -11,18 +11,21 @@ using Module = Autofac.Module;
 
 namespace Benivo.Jobs.Infrastructure
 {
+    /// <summary>
+    /// Autofac module that defines DI registrations related to data persistence and related abstractions
+    /// </summary>
     public class DefaultInfrastructureModule : Module
     {
         private readonly bool _isDevelopment = false;
-        private readonly List<Assembly> _assemblies = new List<Assembly>();
+        private readonly List<Assembly> _assemblies = new ();
 
-        public DefaultInfrastructureModule(bool isDevelopment, Assembly callingAssembly =  null)
+        public DefaultInfrastructureModule(bool isDevelopment, Assembly? callingAssembly =  null)
         {
             _isDevelopment = isDevelopment;
             var coreAssembly = Assembly.GetAssembly(typeof(Project)); // TODO: Replace "Project" with any type from your Core project
             var infrastructureAssembly = Assembly.GetAssembly(typeof(StartupSetup));
-            _assemblies.Add(coreAssembly);
-            _assemblies.Add(infrastructureAssembly);
+            if (coreAssembly is not null) _assemblies.Add(coreAssembly);
+            if (infrastructureAssembly is not null) _assemblies.Add(infrastructureAssembly);
             if (callingAssembly != null)
             {
                 _assemblies.Add(callingAssembly);
@@ -81,12 +84,10 @@ namespace Benivo.Jobs.Infrastructure
 
         private void RegisterDevelopmentOnlyDependencies(ContainerBuilder builder)
         {
-            // TODO: Add development only services
         }
 
         private void RegisterProductionOnlyDependencies(ContainerBuilder builder)
         {
-            // TODO: Add production only services
         }
 
     }

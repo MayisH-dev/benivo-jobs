@@ -42,13 +42,13 @@ namespace Benivo.Jobs.Core.JobAggregate
 
         public bool IsBookmarked => _bookmark is null;
 
-        public JobLocation JobLocation { get; private set; }
+        public JobLocation JobLocation { get; set; }
 
-        public Category Category { get; private set; }
+        public Category Category { get; set; }
 
-        public EmploymentType EmploymentType { get; private set; }
+        public EmploymentType EmploymentType { get; set; }
 
-        public Company Company { get; private set; }
+        public Company Company { get; set; }
 
         public void ToggleBookmark()
         {
