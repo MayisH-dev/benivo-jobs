@@ -32,7 +32,7 @@ namespace Benivo.Jobs.Web
 				options.MinimumSameSitePolicy = SameSiteMode.None;
 			});
 
-			string connectionString = Configuration.GetConnectionString("SqliteConnection");  //Configuration.GetConnectionString("DefaultConnection");
+			string connectionString = Configuration.GetConnectionString("DefaultConnection");
 
 			services.AddDbContext(connectionString);
 

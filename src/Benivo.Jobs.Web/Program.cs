@@ -21,7 +21,6 @@ namespace Benivo.Jobs.Web
                 try
                 {
                     var context = services.GetRequiredService<AppDbContext>();
-//                    context.Database.Migrate();
                     context.Database.EnsureCreated();
                     SeedData.Initialize(services);
                 }
@@ -36,19 +35,16 @@ namespace Benivo.Jobs.Web
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-    Host.CreateDefaultBuilder(args)
-        .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-        .ConfigureWebHostDefaults(webBuilder =>
-        {
-            webBuilder
-                .UseStartup<Startup>()
-                .ConfigureLogging(logging =>
-            {
-                logging.ClearProviders();
-                logging.AddConsole();
-                // logging.AddAzureWebAppDiagnostics(); add this if deploying to Azure
-            });
-        });
-
+            Host.CreateDefaultBuilder(args)
+                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+                .ConfigureWebHostDefaults(webBuilder =>
+                    webBuilder
+                        .UseStartup<Startup>()
+                        .ConfigureLogging(logging =>
+                            logging
+                                .ClearProviders()
+                                .AddConsole()
+                        )
+                );
     }
 }
