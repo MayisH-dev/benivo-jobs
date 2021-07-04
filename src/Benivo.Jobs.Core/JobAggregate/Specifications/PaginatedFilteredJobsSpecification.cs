@@ -5,9 +5,9 @@ using Ardalis.Specification;
 
 namespace Benivo.Jobs.Core.JobAggregate.Specifications
 {
-    public sealed class PaginatedFilteredJobSpecifcation : Specification<Job>
+    public sealed class PaginatedFilteredJobsSpecification : Specification<Job>
     {
-        public PaginatedFilteredJobSpecifcation(
+        public PaginatedFilteredJobsSpecification(
             string? title,
             IEnumerable<int>? categoryIds,
             IEnumerable<int>? employmentTypeIds,
@@ -36,7 +36,7 @@ namespace Benivo.Jobs.Core.JobAggregate.Specifications
             {
                 var (pageSize, pageNumber) = page.Value;
                 Query
-                    // 1 based index indexing
+                    // 1 based page indexing
                     .Skip(pageSize * (pageNumber - 1))
                     .Take(pageNumber);
             }

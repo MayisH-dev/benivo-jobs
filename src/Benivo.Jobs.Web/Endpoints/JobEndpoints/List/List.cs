@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.ApiEndpoints;
@@ -13,8 +12,8 @@ namespace Benivo.Jobs.Web.Endpoints.JobEndpoints.List
 {
     public sealed class List :
         BaseAsyncEndpoint
-            .WithRequest<ListRequest>
-            .WithResponse<ListResponse>
+            .WithRequest<ListJobsRequest>
+            .WithResponse<ListJobsResponse>
     {
         private readonly IReadRepository<Job> _repository;
 
@@ -31,13 +30,13 @@ namespace Benivo.Jobs.Web.Endpoints.JobEndpoints.List
             Tags = new[] { "JobEndpoints" })
         ]
 
-        public override async Task<ActionResult<ListResponse>> HandleAsync([FromQuery] ListRequest request, CancellationToken cancellationToken = default)
+        public override async Task<ActionResult<ListJobsResponse>> HandleAsync([FromQuery] ListJobsRequest request, CancellationToken cancellationToken = default)
         {
             (int PageSize, int PageNumber)? pagination = request.Page is null
                 ? null
                 : (request.Page.Size, request.Page.Number);
 
-            PaginatedFilteredJobSpecifcation spec = new(
+            PaginatedFilteredJobsSpecification spec = new(
                 request.Title,
                 request.CategoryIds,
                 request.EmploymentTypeIds,
@@ -49,7 +48,7 @@ namespace Benivo.Jobs.Web.Endpoints.JobEndpoints.List
 
             var jobs = from job in results select new JobResponse(job);
 
-            ListResponse response = new(jobs);
+            ListJobsResponse response = new(jobs);
 
             return Ok(response);
         }

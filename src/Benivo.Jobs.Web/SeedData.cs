@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using Benivo.Jobs.Core.CompanyAggregate;
+using Benivo.Jobs.Core.JobAggregate;
 using Benivo.Jobs.Core.ProjectAggregate;
 using Benivo.Jobs.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;

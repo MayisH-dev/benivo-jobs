@@ -10,7 +10,7 @@ namespace Benivo.Jobs.Web.Endpoints.JobEndpoints.List
         int Size
     );
 
-    public sealed record ListRequest(
+    public sealed record ListJobsRequest(
         PageRequest? Page,
         string? Title,
         IEnumerable<int>? CategoryIds,
