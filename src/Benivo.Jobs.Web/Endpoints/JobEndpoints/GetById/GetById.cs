@@ -21,14 +21,16 @@ namespace Benivo.Jobs.Web.Endpoints.JobEndpoints.GetById
             _repository = repository;
         }
 
-        [HttpGet("/jobs/{id:int}")]
+        [HttpGet("/jobs/{id}")]
         [SwaggerOperation(
             Summary = "Gets a job post",
             Description = "Gets the details of a job post",
             OperationId = "Jobs.GetById",
             Tags = new[] { "JobEndpoints" })
         ]
-        public override async Task<ActionResult<GetJobByIdResponse>> HandleAsync([FromRoute] GetJobByIdRequest request, CancellationToken cancellationToken = default)
+        public override async Task<ActionResult<GetJobByIdResponse>> HandleAsync(
+            [FromRoute] GetJobByIdRequest request,
+            CancellationToken cancellationToken = default)
         {
             var spec = new JobDetailsByIdSpecification(request.Id);
 

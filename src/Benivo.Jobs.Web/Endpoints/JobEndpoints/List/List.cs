@@ -30,7 +30,9 @@ namespace Benivo.Jobs.Web.Endpoints.JobEndpoints.List
             Tags = new[] { "JobEndpoints" })
         ]
 
-        public override async Task<ActionResult<ListJobsResponse>> HandleAsync([FromQuery] ListJobsRequest request, CancellationToken cancellationToken = default)
+        public override async Task<ActionResult<ListJobsResponse>> HandleAsync(
+            [FromQuery] ListJobsRequest request,
+            CancellationToken cancellationToken = default)
         {
             (int PageSize, int PageNumber)? pagination = request.Page is null
                 ? null
