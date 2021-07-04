@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.ApiEndpoints;
 using Benivo.Jobs.Core.JobAggregate;
@@ -43,7 +45,13 @@ namespace Benivo.Jobs.Web.Endpoints.JobEndpoints.List
                 pagination
             );
 
-            return Ok(await _repository.ListAsync(spec, cancellationToken));
+            var results = await _repository.ListAsync(spec, cancellationToken);
+
+            var jobs = from job in results select new JobResponse(job);
+
+            ListResponse response = new(jobs);
+
+            return Ok(response);
         }
     }
 }
