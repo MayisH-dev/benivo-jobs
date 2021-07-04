@@ -1,7 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using Benivo.Jobs.SharedKernel;
 using Benivo.Jobs.SharedKernel.Interfaces;
-using System;
 
 namespace Benivo.Jobs.Core.CompanyAggregate
 {

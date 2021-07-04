@@ -14,7 +14,6 @@ namespace Benivo.Jobs.Web.Endpoints.JobEndpoints.List
         PageRequest? Page,
         string? Title,
         IEnumerable<int>? CategoryIds,
-        IEnumerable<int>? JobLocationIds,
         IEnumerable<int>? EmploymentTypeIds,
         IEnumerable<int>? LocationIds
     );
