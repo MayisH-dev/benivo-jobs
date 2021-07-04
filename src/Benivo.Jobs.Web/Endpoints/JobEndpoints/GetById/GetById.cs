@@ -21,7 +21,7 @@ namespace Benivo.Jobs.Web.Endpoints.JobEndpoints.GetById
             _repository = repository;
         }
 
-        [HttpGet("/jobs/{id}")]
+        [HttpGet("/jobs/{Id:int}")]
         [SwaggerOperation(
             Summary = "Gets a job post",
             Description = "Gets the details of a job post",

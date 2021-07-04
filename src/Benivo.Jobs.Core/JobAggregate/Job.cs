@@ -42,6 +42,11 @@ namespace Benivo.Jobs.Core.JobAggregate
             Bookmark = bookmark;
         }
 
+        public void RemoveBookmark()
+        {
+            Bookmark = null;
+        }
+
         public JobLocation JobLocation { get; set; }
 
         public Category Category { get; set; }
