@@ -2,6 +2,8 @@
 using System.Reflection;
 using Autofac;
 using Benivo.Jobs.Core.Interfaces;
+using Benivo.Jobs.Core.JobAggregate.Interfaces;
+using Benivo.Jobs.Core.JobAggregate.Services;
 using Benivo.Jobs.Core.ProjectAggregate;
 using Benivo.Jobs.Infrastructure.Data;
 using Benivo.Jobs.SharedKernel.Interfaces;
@@ -17,9 +19,9 @@ namespace Benivo.Jobs.Infrastructure
     public class DefaultInfrastructureModule : Module
     {
         private readonly bool _isDevelopment = false;
-        private readonly List<Assembly> _assemblies = new ();
+        private readonly List<Assembly> _assemblies = new();
 
-        public DefaultInfrastructureModule(bool isDevelopment, Assembly? callingAssembly =  null)
+        public DefaultInfrastructureModule(bool isDevelopment, Assembly? callingAssembly = null)
         {
             _isDevelopment = isDevelopment;
             var coreAssembly = Assembly.GetAssembly(typeof(Project)); // TODO: Replace "Project" with any type from your Core project
@@ -50,6 +52,7 @@ namespace Benivo.Jobs.Infrastructure
             builder.RegisterGeneric(typeof(EfRepository<>))
                 .As(typeof(IRepository<>))
                 .As(typeof(IReadRepository<>))
+                .As(typeof(IAggregatingReadRepository<>))
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<Mediator>()
@@ -79,6 +82,10 @@ namespace Benivo.Jobs.Infrastructure
 
             builder.RegisterType<EmailSender>()
                 .As<IEmailSender>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<JobCountService>()
+                .As<IJobCountService>()
                 .InstancePerLifetimeScope();
         }
 

@@ -1,6 +1,5 @@
 ﻿using Ardalis.GuardClauses;
 using Benivo.Jobs.Core.CompanyAggregate;
-using Benivo.Jobs.Core.JobAggregate.Events;
 using Benivo.Jobs.SharedKernel;
 using Benivo.Jobs.SharedKernel.Interfaces;
 
@@ -11,8 +10,6 @@ namespace Benivo.Jobs.Core.JobAggregate
         private string _title;
 
         private string _description;
-
-        private Bookmark? _bookmark;
 
         public Job(
             string title,
@@ -34,13 +31,21 @@ namespace Benivo.Jobs.Core.JobAggregate
             set => _description = Guard.Against.NullOrEmpty(value, nameof(Description));
         }
 
-        public Bookmark? Bookmark
+        public Bookmark? Bookmark { get; private set; }
+
+        public bool IsBookmarked => Bookmark is not null;
+
+        public void AddBookmark(Bookmark bookmark)
         {
-            get => _bookmark;
-            private set => _bookmark = value;
+            bookmark = Guard.Against.Null(bookmark, nameof(bookmark));
+            bookmark.Job = this;
+            Bookmark = bookmark;
         }
 
-        public bool IsBookmarked => _bookmark is null;
+        public void RemoveBookmark()
+        {
+            Bookmark = null;
+        }
 
         public JobLocation JobLocation { get; set; }
 
@@ -49,19 +54,5 @@ namespace Benivo.Jobs.Core.JobAggregate
         public EmploymentType EmploymentType { get; set; }
 
         public Company Company { get; set; }
-
-        public void ToggleBookmark()
-        {
-            if (_bookmark is null)
-            {
-                _bookmark = new () { Job = this };
-                AddDomainEvent(new JobBookmarkedEvent(this));
-            }
-            else
-            {
-                _bookmark = null;
-                ClearDomainEvents();
-            }
-        }
     }
 }
