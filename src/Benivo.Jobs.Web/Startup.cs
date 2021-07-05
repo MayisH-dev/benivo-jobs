@@ -12,84 +12,94 @@ using Microsoft.OpenApi.Models;
 
 namespace Benivo.Jobs.Web
 {
-	public class Startup
-	{
-		private readonly IWebHostEnvironment _env;
+    public class Startup
+    {
+        private readonly IWebHostEnvironment _env;
 
-		public Startup(IConfiguration config, IWebHostEnvironment env)
-		{
-			Configuration = config;
-			_env = env;
-		}
+        public Startup(IConfiguration config, IWebHostEnvironment env)
+        {
+            Configuration = config;
+            _env = env;
+        }
 
-		public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; }
 
-		public void ConfigureServices(IServiceCollection services)
-		{
-			services.Configure<CookiePolicyOptions>(options =>
-			{
-				options.CheckConsentNeeded = context => true;
-				options.MinimumSameSitePolicy = SameSiteMode.None;
-			});
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
 
-			string connectionString = Configuration.GetConnectionString("DefaultConnection");
+            services.AddCors(cors =>
+                cors.AddDefaultPolicy(
+                    policy => policy
+                        .WithOrigins("http://localhost:3001")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+            ));
 
-			services.AddDbContext(connectionString);
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
 
-			services.AddControllersWithViews().AddNewtonsoftJson();
-			services.AddRazorPages();
+            services.AddDbContext(connectionString);
 
-			services.AddSwaggerGen(c => {
-				c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
-				c.EnableAnnotations();
-			});
+            services.AddControllersWithViews().AddNewtonsoftJson();
+            services.AddRazorPages();
 
-			// add list services for diagnostic purposes - see https://github.com/ardalis/AspNetCoreStartupServices
-			services.Configure<ServiceConfig>(config =>
-			{
-				config.Services = new List<ServiceDescriptor>(services);
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                c.EnableAnnotations();
+            });
 
-				// optional - default path to view services is /listallservices - recommended to choose your own path
-				config.Path = "/listservices";
-			});
-		}
+            // add list services for diagnostic purposes - see https://github.com/ardalis/AspNetCoreStartupServices
+            services.Configure<ServiceConfig>(config =>
+            {
+                config.Services = new List<ServiceDescriptor>(services);
 
-		public void ConfigureContainer(ContainerBuilder builder)
-		{
-			builder.RegisterModule(new DefaultCoreModule());
-			builder.RegisterModule(new DefaultInfrastructureModule(_env.EnvironmentName == "Development"));
-		}
+                // optional - default path to view services is /listallservices - recommended to choose your own path
+                config.Path = "/listservices";
+            });
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterModule(new DefaultCoreModule());
+            builder.RegisterModule(new DefaultInfrastructureModule(_env.EnvironmentName == "Development"));
+        }
 
 
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-		{
-			if (env.EnvironmentName == "Development")
-			{
-				app.UseDeveloperExceptionPage();
-				app.UseShowAllServicesMiddleware();
-			}
-			else
-			{
-				app.UseExceptionHandler("/Home/Error");
-				app.UseHsts();
-			}
-			app.UseRouting();
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.EnvironmentName == "Development")
+            {
+                app.UseCors();
+                app.UseDeveloperExceptionPage();
+                app.UseShowAllServicesMiddleware();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
+            }
+            app.UseRouting();
 
-			app.UseHttpsRedirection();
-			app.UseStaticFiles();
-			app.UseCookiePolicy();
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseCookiePolicy();
 
-			// Enable middleware to serve generated Swagger as a JSON endpoint.
-			app.UseSwagger();
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
 
-			// Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
-			app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"));
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"));
 
-			app.UseEndpoints(endpoints =>
-			{
-				endpoints.MapDefaultControllerRoute();
-				endpoints.MapRazorPages();
-			});
-		}
-	}
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapDefaultControllerRoute();
+                endpoints.MapRazorPages();
+            });
+        }
+    }
 }

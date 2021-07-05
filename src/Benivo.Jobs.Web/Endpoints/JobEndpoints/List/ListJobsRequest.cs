@@ -13,7 +13,7 @@ namespace Benivo.Jobs.Web.Endpoints.JobEndpoints.List
     );
 
     public sealed record ListJobsRequest(
-        Page Page,
+        Page? Page,
         string? Title,
         IEnumerable<int>? CategoryIds,
         IEnumerable<int>? EmploymentTypeIds,
@@ -22,7 +22,6 @@ namespace Benivo.Jobs.Web.Endpoints.JobEndpoints.List
     {
         internal PaginatedFilteredJobsSpecification ToPaginatedFilteredJobsSpecification()
         {
-
             (int PageSize, int PageNumber)? pagination = Page is null
                 ? null
                 : (Page.Size, Page.Number);

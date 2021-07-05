@@ -25,7 +25,7 @@ namespace Benivo.Jobs.Web.Endpoints.JobEndpoints.RemoveBookmark
         [SwaggerOperation(
             Summary = "Removes a bookmark from a job",
             Description = "Removes the bookmark from the job with the given id",
-            OperationId = "Jobs.AddBookmark",
+            OperationId = "Jobs.RemoveBookmark",
             Tags = new[] { "JobEndpoints" })
         ]
         public override async Task<ActionResult> HandleAsync(
