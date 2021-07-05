@@ -26,7 +26,7 @@ namespace Benivo.Jobs.Core.JobAggregate.Specifications
                 Query
                     // 1 based page indexing
                     .Skip(pageSize * (pageNumber - 1))
-                    .Take(pageNumber);
+                    .Take(pageSize);
             }
         }
     }
