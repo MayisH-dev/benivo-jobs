@@ -3,6 +3,7 @@ using System.Reflection;
 using Autofac;
 using Benivo.Jobs.Core.Interfaces;
 using Benivo.Jobs.Core.JobAggregate.Interfaces;
+using Benivo.Jobs.Core.JobAggregate.Services;
 using Benivo.Jobs.Core.ProjectAggregate;
 using Benivo.Jobs.Infrastructure.Data;
 using Benivo.Jobs.SharedKernel.Interfaces;
@@ -81,6 +82,10 @@ namespace Benivo.Jobs.Infrastructure
 
             builder.RegisterType<EmailSender>()
                 .As<IEmailSender>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<JobCountService>()
+                .As<IJobCountService>()
                 .InstancePerLifetimeScope();
         }
 
