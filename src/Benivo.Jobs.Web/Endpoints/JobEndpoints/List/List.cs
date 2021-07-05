@@ -34,17 +34,8 @@ namespace Benivo.Jobs.Web.Endpoints.JobEndpoints.List
             [FromQuery] ListJobsRequest request,
             CancellationToken cancellationToken = default)
         {
-            (int PageSize, int PageNumber)? pagination = request.Page is null
-                ? null
-                : (request.Page.Size, request.Page.Number);
+            var spec = request.ToPaginatedFilteredJobsSpecification();
 
-            PaginatedFilteredJobsSpecification spec = new(
-                request.Title,
-                request.CategoryIds,
-                request.EmploymentTypeIds,
-                request.LocationIds,
-                pagination
-            );
 
             var results = await _repository.ListAsync(spec, cancellationToken);
 
