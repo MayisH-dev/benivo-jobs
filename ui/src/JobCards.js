@@ -1,10 +1,24 @@
 import { Card, Col, Row } from 'antd'
 import { InfoCircleOutlined, TagFilled, TagOutlined } from '@ant-design/icons'
+import { useState } from 'react'
+import JobModal from './JobModal'
 
 const JobCards = ({ jobs, onRemoveBookmark, onAddBookmark }) => {
-  if (jobs && jobs.length > 0)
+  const [{ id: modalId }, setModalDisplay] = useState({ id: null })
+
+  const toggleModal = (id) => {
+    if (modalId === null) setModalDisplay(id)
+    else setModalDisplay({ id: null })
+  }
+
+  if (jobs.length > 0)
     return (
       <div>
+        <JobModal
+          toggleOff={toggleModal}
+          visible={modalId !== null}
+          id={modalId}
+        />
         <div className='site-card-wrapper'>
           <Row gutter={16}>
             {jobs.map(
@@ -25,7 +39,10 @@ const JobCards = ({ jobs, onRemoveBookmark, onAddBookmark }) => {
                           key='add-bookmark'
                         />
                       ),
-                      <InfoCircleOutlined key='details' />,
+                      <InfoCircleOutlined
+                        onClick={() => toggleModal(id)}
+                        key='details'
+                      />,
                     ]}
                   >
                     <strong>Type:</strong> {employmentTypeTitle}{' '}
