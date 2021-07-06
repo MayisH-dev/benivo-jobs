@@ -15,7 +15,7 @@ const App = () => {
   })
 
   const [countByGroups, setCountByGroups] = useState({})
-  const [jobs, setJobs] = useState({})
+  const [jobs, setJobs] = useState([])
 
   const filterQuery = filter.categoryIds
     .map((c) => `CategoryIds=${c}`)
@@ -31,6 +31,26 @@ const App = () => {
       )
     )
     setCountByGroups(countByGroupsResponse)
+  }
+
+  const addBookmark = async (id) => {
+    const { status } = await api.patch(`/jobs/${id}/add-bookmark`)
+    if (status === 200)
+      setJobs(
+        jobs.map((job) =>
+          job.id === id ? { ...job, isBookmarked: true } : job
+        )
+      )
+  }
+
+  const removeBookmark = async (id) => {
+    const { status } = await api.patch(`/jobs/${id}/remove-bookmark`)
+    if (status === 200)
+      setJobs(
+        jobs.map((job) =>
+          job.id === id ? { ...job, isBookmarked: false } : job
+        )
+      )
   }
 
   const fetchJobs = async () => {
@@ -93,7 +113,11 @@ const App = () => {
       </div>
       <br />
       <div>
-        <JobCards jobs={jobs} />
+        <JobCards
+          onRemoveBookmark={removeBookmark}
+          onAddBookmark={addBookmark}
+          jobs={jobs}
+        />
       </div>
     </div>
   )

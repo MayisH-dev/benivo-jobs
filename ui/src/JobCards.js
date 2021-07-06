@@ -15,9 +15,15 @@ const JobCards = ({ jobs, onRemoveBookmark, onAddBookmark }) => {
                     bordered={true}
                     actions={[
                       isBookmarked ? (
-                        <TagFilled key='remove-bookmark' />
+                        <TagFilled
+                          onClick={() => onRemoveBookmark(id)}
+                          key='remove-bookmark'
+                        />
                       ) : (
-                        <TagOutlined key='add-bookmark' />
+                        <TagOutlined
+                          onClick={() => onAddBookmark(id)}
+                          key='add-bookmark'
+                        />
                       ),
                       <InfoCircleOutlined key='details' />,
                     ]}
