@@ -1,12 +1,17 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Select } from 'antd'
 
 const { Option } = Select
 
-const MultiSearch = ({ placeholder, items, onChange, ...props }) => {
-  const handleChange = (selected) => {
-    onChange(selected)
-  }
+const MultiSearch = ({ placeholder, items, change, ...props }) => {
+  const [selectedOptions, setSelectedOptions] = useState([]);
+
+  const handleChange = (selectedOptions) => {
+      setSelectedOptions(selectedOptions);
+  };
+
+
+
   return (
     <>
       <Select
@@ -14,9 +19,15 @@ const MultiSearch = ({ placeholder, items, onChange, ...props }) => {
         allowClear
         style={{ width: '20%' }}
         placeholder={placeholder}
-        onChange={handleChange}
+        onBlur={() => change(selectedOptions)}
+        onClear={() => {
+          console.log('clearing')
+          change([])
+          console.log('opts ', selectedOptions)
+        }}
         optionFilterProp='children'
         {...props}
+        onChange={handleChange}
       >
         {items &&
           items.map(({ id, title, count }) => (

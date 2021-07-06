@@ -1,24 +1,21 @@
-import { useState } from 'react'
 import { Modal } from 'antd'
 
-const JobModal = ({ visible, id, toggleOff }) => {
-  const [state, setState] = useState({ visible: false })
-  return (
-    <>
-      <Modal
-        onCancel={() => toggleOff(id)}
-        onOk={() => toggleOff(id)}
-        visible={visible}
-        title={`Title${id}`}
-      >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-      </Modal>
-    </>
-  )
+const JobModal = ({job, closeModal }) => {
+
+  const { title, description, isBookmarked, companyTitle, location, employmentTypeTitle } = job
+
+  return (<Modal
+    onCancel={closeModal}
+    onOk={closeModal}
+    visible
+    title={title}
+  >
+    <h3>Employment Type: {employmentTypeTitle}</h3>
+    <h3>Location: {location}</h3>
+    <h3>Company: {companyTitle}</h3>
+    <p>Description: {description}</p>
+  </Modal>
+  );
 }
 
 export default JobModal

@@ -2,23 +2,34 @@ import { Card, Col, Row } from 'antd'
 import { InfoCircleOutlined, TagFilled, TagOutlined } from '@ant-design/icons'
 import { useState } from 'react'
 import JobModal from './JobModal'
+import api from './Api'
 
 const JobCards = ({ jobs, onRemoveBookmark, onAddBookmark }) => {
-  const [{ id: modalId }, setModalDisplay] = useState({ id: null })
+  const [job, setJob] = useState(null);
 
-  const toggleModal = (id) => {
-    if (modalId === null) setModalDisplay(id)
-    else setModalDisplay({ id: null })
-  }
+  const closeJobModal = () => {
+    setJob(null);
+  };
 
-  if (jobs.length > 0)
+  const fetchJob = async id => {
+    const response = await api.get(`/jobs/${id}`);
+    setJob(response.data);
+  };
+
+
+  if (jobs.length > 0) {
     return (
       <div>
-        <JobModal
-          toggleOff={toggleModal}
-          visible={modalId !== null}
-          id={modalId}
+
+        {job ?
+          <JobModal
+            closeModal={closeJobModal}
+            job={job}
         />
+        : null}
+
+
+
         <div className='site-card-wrapper'>
           <Row gutter={16}>
             {jobs.map(
@@ -40,7 +51,7 @@ const JobCards = ({ jobs, onRemoveBookmark, onAddBookmark }) => {
                         />
                       ),
                       <InfoCircleOutlined
-                        onClick={() => toggleModal(id)}
+                        onClick={() => fetchJob(id)}
                         key='details'
                       />,
                     ]}
@@ -55,7 +66,9 @@ const JobCards = ({ jobs, onRemoveBookmark, onAddBookmark }) => {
         </div>
       </div>
     )
-  else return <div>Nothin to display</div>
+  }
+
+  else return <div>Nothing to display</div>
 }
 
 export default JobCards

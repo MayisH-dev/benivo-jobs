@@ -5,6 +5,7 @@ import './App.css'
 import JobCards from './JobCards'
 import MultiSearch from './MultiSearch'
 import Search from 'antd/lib/input/Search'
+import Pager from './Pager'
 
 const App = () => {
   const [filter, setFilter] = useState({
@@ -12,10 +13,17 @@ const App = () => {
     employmentTypeIds: [],
     locationIds: [],
     title: '',
+    pageSize: 20,
+    pageNumber: 1
   })
 
   const [countByGroups, setCountByGroups] = useState({})
   const [jobs, setJobs] = useState([])
+
+
+  // const buildQuery = () => {
+  //   const urlSearchParams = new URLSearchParams
+  // }
 
   const filterQuery = filter.categoryIds
     .map((c) => `CategoryIds=${c}`)
@@ -23,6 +31,8 @@ const App = () => {
     .concat(filter.locationIds.map((j) => `LocationIds=${j}`))
     .join('&')
     .concat(filter.title === '' ? '' : `&Title=${filter.title}`)
+
+
 
   const fetchCountsByGroups = async () => {
     const { data: countByGroupsResponse } = await api.get(
@@ -57,7 +67,7 @@ const App = () => {
     const {
       data: { jobs: jobsResponse },
     } = await api.get(
-      '/jobs/?Page.Number=1&Page.Size=20'.concat(
+      `/jobs/?Page.Number=${filter.pageNumber}&Page.Size=${filter.pageSize}`.concat(
         filterQuery === '' ? '' : `&${filterQuery}`
       )
     )
@@ -82,7 +92,7 @@ const App = () => {
       </div>
       <div>
         <MultiSearch
-          onChange={(locationIds) => {
+          change={(locationIds) => {
             setFilter({ ...filter, locationIds })
           }}
           placeholder='Location'
@@ -90,7 +100,7 @@ const App = () => {
           style={{ paddingRight: 10, paddingLeft: 10, width: 320 }}
         />
         <MultiSearch
-          onChange={(categoryIds) => {
+          change={(categoryIds) => {
             setFilter({ ...filter, categoryIds })
           }}
           placeholder='Category'
@@ -98,7 +108,7 @@ const App = () => {
           style={{ paddingRight: 10, paddingLeft: 10, width: 320 }}
         />
         <MultiSearch
-          onChange={(employmentTypeIds) =>
+          change={(employmentTypeIds) =>
             setFilter({ ...filter, employmentTypeIds })
           }
           placeholder='Employment Type'
@@ -112,11 +122,22 @@ const App = () => {
         />
       </div>
       <br />
+      <Pager
+        total = {6000}
+        // total={countByGroups.categoryIds.reduce((acc, cat) => acc + item, 0)}
+      />
+      <br />
+
       <div>
         <JobCards
           onRemoveBookmark={removeBookmark}
           onAddBookmark={addBookmark}
           jobs={jobs}
+          size={filter.pageSize}
+          current={filter.pageNumber}
+          onChange={(pageNumber,pageSize) => {
+            console.log("setting filter", pageSize, pageNumber)
+            setFilter({...filter, pageSize, pageNumber})}}
         />
       </div>
     </div>
