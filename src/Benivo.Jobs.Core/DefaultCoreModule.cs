@@ -1,6 +1,6 @@
 ﻿using Autofac;
-using Benivo.Jobs.Core.Interfaces;
-using Benivo.Jobs.Core.Services;
+using Benivo.Jobs.Core.JobAggregate.Interfaces;
+using Benivo.Jobs.Core.JobAggregate.Services;
 
 namespace Benivo.Jobs.Core
 {
@@ -8,8 +8,8 @@ namespace Benivo.Jobs.Core
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<ToDoItemSearchService>()
-                .As<IToDoItemSearchService>()
+            builder.RegisterType<JobCountService>()
+                .As<IJobCountService>()
                 .InstancePerLifetimeScope();
         }
     }

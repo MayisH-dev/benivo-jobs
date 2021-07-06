@@ -1,5 +1,4 @@
-﻿using Benivo.Jobs.Core.ProjectAggregate;
-using Benivo.Jobs.Infrastructure.Data;
+﻿using Benivo.Jobs.Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,13 +27,13 @@ namespace Benivo.Jobs.IntegrationTests.Data
             return builder.Options;
         }
 
-        protected EfRepository<Project> GetRepository()
-        {
-            var options = CreateNewContextOptions();
-            var mockMediator = new Mock<IMediator>();
+        // protected EfRepository<Project> GetRepository()
+        // {
+        //     var options = CreateNewContextOptions();
+        //     var mockMediator = new Mock<IMediator>();
 
-            _dbContext = new AppDbContext(options, mockMediator.Object);
-            return new EfRepository<Project>(_dbContext);
-        }
+        //     _dbContext = new AppDbContext(options, mockMediator.Object);
+        //     return new EfRepository<Project>(_dbContext);
+        // }
     }
 }

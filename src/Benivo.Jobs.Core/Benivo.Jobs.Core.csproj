@@ -18,12 +18,4 @@
     <ProjectReference Include="..\Benivo.Jobs.SharedKernel\Benivo.Jobs.SharedKernel.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="CompanyAggregate\Events\" />
-    <Folder Include="CompanyAggregate\Handlers\" />
-    <Folder Include="CompanyAggregate\Specifications\" />
-    <Folder Include="JobAggregate\Handlers\" />
-    <Folder Include="JobAggregate\Specifications\" />
-  </ItemGroup>
-
 </Project>

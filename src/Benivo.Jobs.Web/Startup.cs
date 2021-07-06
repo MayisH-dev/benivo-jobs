@@ -49,7 +49,7 @@ namespace Benivo.Jobs.Web
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Benivo Jobs Api", Version = "v1" });
                 c.EnableAnnotations();
             });
 
@@ -93,7 +93,7 @@ namespace Benivo.Jobs.Web
             app.UseSwagger();
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Benivo Jobs Api V1"));
 
             app.UseEndpoints(endpoints =>
             {

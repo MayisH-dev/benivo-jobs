@@ -2,7 +2,6 @@
 using System.Linq;
 using Benivo.Jobs.Core.CompanyAggregate;
 using Benivo.Jobs.Core.JobAggregate;
-using Benivo.Jobs.Core.ProjectAggregate;
 using Benivo.Jobs.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,23 +10,6 @@ namespace Benivo.Jobs.Web
 {
     public static class SeedData
     {
-        public static readonly Project TestProject1 = new("Test Project");
-        public static readonly ToDoItem ToDoItem1 = new()
-        {
-            Title = "Get Sample Working",
-            Description = "Try to get the sample to build."
-        };
-        public static readonly ToDoItem ToDoItem2 = new()
-        {
-            Title = "Review Solution",
-            Description = "Review the different projects in the solution and how they relate to one another."
-        };
-        public static readonly ToDoItem ToDoItem3 = new()
-        {
-            Title = "Run and Review Tests",
-            Description = "Make sure all the tests run and review what they are doing."
-        };
-
         public static EmploymentType[] EmploymentTypes = new EmploymentType[]{
             new ("Other"),
             new ("Training"),
@@ -650,17 +632,14 @@ namespace Benivo.Jobs.Web
 
         public static void Initialize(IServiceProvider serviceProvider)
         {
-            using (var dbContext = new AppDbContext(
-                serviceProvider.GetRequiredService<DbContextOptions<AppDbContext>>(), null))
+            using var dbContext = new AppDbContext(serviceProvider.GetRequiredService<DbContextOptions<AppDbContext>>(), null!);
+            // Look for any TODO items.
+            if (dbContext.Set<Job>().Any())
             {
-                // Look for any TODO items.
-                if (dbContext.Set<ToDoItem>().Any())
-                {
-                    return;   // DB has been seeded
-                }
-
-                PopulateTestData(dbContext);
+                return;   // DB has been seeded
             }
+
+            PopulateTestData(dbContext);
         }
         public static void PopulateTestData(AppDbContext dbContext)
         {

@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using Autofac;
-using Benivo.Jobs.Core.Interfaces;
-using Benivo.Jobs.Core.JobAggregate.Interfaces;
-using Benivo.Jobs.Core.JobAggregate.Services;
-using Benivo.Jobs.Core.ProjectAggregate;
+using Benivo.Jobs.Core;
 using Benivo.Jobs.Infrastructure.Data;
 using Benivo.Jobs.SharedKernel.Interfaces;
 using MediatR;
@@ -24,7 +21,7 @@ namespace Benivo.Jobs.Infrastructure
         public DefaultInfrastructureModule(bool isDevelopment, Assembly? callingAssembly = null)
         {
             _isDevelopment = isDevelopment;
-            var coreAssembly = Assembly.GetAssembly(typeof(Project)); // TODO: Replace "Project" with any type from your Core project
+            var coreAssembly = Assembly.GetAssembly(typeof(DefaultCoreModule));
             var infrastructureAssembly = Assembly.GetAssembly(typeof(StartupSetup));
             if (coreAssembly is not null) _assemblies.Add(coreAssembly);
             if (infrastructureAssembly is not null) _assemblies.Add(infrastructureAssembly);
@@ -79,14 +76,6 @@ namespace Benivo.Jobs.Infrastructure
                     .AsClosedTypesOf(mediatrOpenType)
                     .AsImplementedInterfaces();
             }
-
-            builder.RegisterType<EmailSender>()
-                .As<IEmailSender>()
-                .InstancePerLifetimeScope();
-
-            builder.RegisterType<JobCountService>()
-                .As<IJobCountService>()
-                .InstancePerLifetimeScope();
         }
 
         private void RegisterDevelopmentOnlyDependencies(ContainerBuilder builder)
